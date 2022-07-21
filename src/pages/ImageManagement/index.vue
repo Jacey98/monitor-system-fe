@@ -1,23 +1,16 @@
 <template>
-  <div>
-    ImageManagement
-  </div>
+  <div>ImageManagement</div>
 </template>
 
 <script>
 export default {
   name: "ImageManagement",
   data: function () {
-    return {
-      
-    };
+    return {};
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
 <style scoped lang='less'>
-
 </style>

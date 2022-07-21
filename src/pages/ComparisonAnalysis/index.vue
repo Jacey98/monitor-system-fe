@@ -1,23 +1,16 @@
 <template>
-  <div>
-    ComparisonAnalysis
-  </div>
+  <div>ComparisonAnalysis</div>
 </template>
 
 <script>
 export default {
   name: "ComparisonAnalysis",
   data: function () {
-    return {
-      
-    };
+    return {};
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
 <style scoped lang='less'>
-
 </style>

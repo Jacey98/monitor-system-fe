@@ -1,10 +1,10 @@
 <template>
-  <div>ImageDisplay</div>
+  <div>UserManagement</div>
 </template>
 
 <script>
 export default {
-  name: "ImageDisplay",
+  name: "UserManagement",
   data: function () {
     return {};
   },

@@ -1,23 +1,16 @@
 <template>
-  <div>
-    AquacultureWarning
-  </div>
+  <div>AquacultureWarning</div>
 </template>
 
 <script>
 export default {
   name: "AquacultureWarning",
   data: function () {
-    return {
-      
-    };
+    return {};
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
 <style scoped lang='less'>
-
 </style>
