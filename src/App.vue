@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <PageHeader></PageHeader>
+    <PageHeader v-show='1'></PageHeader>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -23,12 +24,12 @@ export default {
 </script>
 
 <style lang='less'>
-// #app {
-//   font-family: Avenir, Helvetica, Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   text-align: center;
-//   color: #2c3e50;
-//   margin-top: 60px;
-// }
+html,body {
+  // height: 100%;
+  background: rgb(240, 242, 245);  
+  overflow-y: hidden; 
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
 </style>
