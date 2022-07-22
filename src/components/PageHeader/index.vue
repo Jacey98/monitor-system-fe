@@ -91,6 +91,7 @@ export default {
   justify-content: space-between;
   font-size: 17px;
   position: fixed;
+  z-index: 999;
 
   & * {
     transition: 0.3s;

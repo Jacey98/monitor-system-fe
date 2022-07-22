@@ -1,29 +1,32 @@
 <template>
-  <div id="app">
-    <PageHeader v-show="this.$route.path !== '/login-page'"></PageHeader>
-    <router-view style="padding-top: 60px" class="clearfix"></router-view>
+  <div id="app" class="clearfix">
+    <PageHeader v-show='this.$route.path !== "/login-page"'></PageHeader>
+    <router-view style='padding-top: 100px; box-sizing: border-box;' class="clearfix"></router-view>
   </div>
 </template>
 
 <script>
-import PageHeader from "./components/PageHeader";
+import PageHeader from './components/PageHeader'
 export default {
   name: "App",
-  components: {
-    PageHeader,
+  components:{
+    PageHeader
   },
   data: function () {
-    return {};
+    return {
+      
+    };
   },
-  methods: {},
+  methods: {
+    
+  },
 };
 </script>
 
 <style lang='less'>
-html,
-body {
+html,body {
   height: 100%;
-  background: rgb(240, 242, 245);
+  background: rgb(240, 242, 245);  
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -37,4 +40,5 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   height: 100%;
 }
+
 </style>

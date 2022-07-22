@@ -9,11 +9,20 @@
       label-position="right"
     >
       <el-form-item label="用户名">
-        <el-input v-model="user.name" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
+        <el-input
+          v-model="user.name"
+          placeholder="请输入用户名"
+          prefix-icon="el-icon-user"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码">
         <label slot="label">密&nbsp;&nbsp;码&nbsp;</label>
-        <el-input v-model="user.password" placeholder="请输入密码" show-password prefix-icon="el-icon-lock"></el-input>
+        <el-input
+          v-model="user.password"
+          placeholder="请输入密码"
+          show-password
+          prefix-icon="el-icon-lock"
+        ></el-input>
       </el-form-item>
       <el-form-item id="btn">
         <el-button type="primary" @click="onSubmit"
@@ -47,12 +56,8 @@ export default {
 <style scoped lang='less'>
 #login {
   background-color: white;
-  width: 360px;
-  height: 340px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  width: 500px;
+  height: 480px;
   margin: auto;
   margin-top: 18vh;
   padding: 70px;
@@ -73,7 +78,7 @@ export default {
   padding-top: 10px;
 }
 #btn {
-  margin-top: 40px;
+  margin-top: 46px;
   margin-left: 63px;
 }
 </style>

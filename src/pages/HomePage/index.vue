@@ -39,9 +39,9 @@ export default {
 
   #nav {
     margin: auto;
-    margin-top: 18vh;
+    margin-top: 12vh;
     width: 80vw;
-    height: 500px;
+    height: 300px;
     padding: 40px;
     display: flex;
     justify-content: space-between;
