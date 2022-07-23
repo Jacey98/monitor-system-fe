@@ -110,12 +110,32 @@
       <el-button>还原设置</el-button>
     </div>
     <div id="display">
-      <img id='firstImg' src="@/assets/image.png">
-      <img src="@/assets/pro.png" :style="`filter: drop-shadow(2740px 0 ${bgColor[0]});`">
-      <img src="@/assets/res.png" :style="`filter: drop-shadow(2740px 0 ${bgColor[1]});`">
-      <img src="@/assets/aqu.png" :style="`filter: drop-shadow(2740px 0 ${bgColor[2]});`">
-      <img src="@/assets/rca.png" :style="`filter: drop-shadow(2740px 0 ${bgColor[3]});`">
-      <img src="@/assets/cca.png" :style="`filter: drop-shadow(2740px 0 ${bgColor[4]});`">
+      <img v-show="checked[0]" id="firstImg" src="@/assets/image.png" />
+      <img
+        v-show="checked[1]"
+        src="@/assets/pro.png"
+        :style="`filter: drop-shadow(2740px 0 ${color[0]});`"
+      />
+      <img
+        v-show="checked[2]"
+        src="@/assets/res.png"
+        :style="`filter: drop-shadow(2740px 0 ${color[1]});`"
+      />
+      <img
+        v-show="checked[3]"
+        src="@/assets/aqu.png"
+        :style="`filter: drop-shadow(2740px 0 ${color[2]});`"
+      />
+      <img
+        v-show="checked[4]"
+        src="@/assets/rca.png"
+        :style="`filter: drop-shadow(2740px 0 ${color[3]});`"
+      />
+      <img
+        v-show="checked[5]"
+        src="@/assets/cca.png"
+        :style="`filter: drop-shadow(2740px 0 ${color[4]});`"
+      />
     </div>
   </div>
 </template>
@@ -128,31 +148,26 @@ export default {
       options: [
         {
           value: "选项1",
-          label: "黄金糕",
+          label: "LC81190412013296LGN01",
+        },
+        {
+          value: "选项2",
+          label: "LC81190412013297LGN01",
         },
       ],
-      value: "",
-      checked: [false, false, false, false, false, false],
+      value: "选项1",
+      checked: [true, false, false, false, false, false],
       color: [
-        "rgba(100, 69, 0, 0.68)",
-        "rgba(100, 69, 0, 0.68)",
-        "rgba(100, 69, 0, 0.68)",
-        "rgba(100, 69, 0, 0.68)",
-        "rgba(100, 69, 0, 0.68)",
+        "rgba(255, 127, 127, 0.5)",
+        "rgba(255, 235, 175, 0.5)",
+        "rgba(115, 178, 255, 0.5)",
+        "rgba(115, 178, 255, 1)",
+        "rgba(255, 127, 127, 1)",
       ],
       predefineColors: ["#ff4500"],
-      bgColor: [
-        "rgba(83, 158, 213, 0)",
-        "rgba(83, 158, 213, 0)",
-        "rgba(83, 158, 213, 0)",
-        "rgba(115, 178, 255, 1)",
-        "rgba(83, 158, 213, 0)",
-      ],
     };
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 
@@ -240,17 +255,16 @@ export default {
     position: absolute;
     top: 100px;
     display: inline-block;
-    border: 4px solid rgb(185, 185, 185);
+    border: 2px solid rgb(189, 199, 219);
 
     img {
-      max-width:100%;
-      max-height:100%;
-      position: absolute; 
+      max-width: 100%;
+      max-height: 100%;
+      position: absolute;
       margin: auto;
-      top: 50%; 
+      top: 50%;
       left: 50%;
-      transform: translate(-50%,-50%);
-      
+      transform: translate(-50%, -50%);
     }
     img:not(#firstImg) {
       left: -2000px;

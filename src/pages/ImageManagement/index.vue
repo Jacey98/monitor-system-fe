@@ -1,14 +1,177 @@
 <template>
-  <div id="main">ImageManagement</div>
+  <div id="main">
+    <div id="settings">
+      <div id="search">
+        <el-input
+          v-model="search"
+          placeholder="请输入影像名称"
+          prefix-icon="el-icon-search"
+        />
+      </div>
+      <el-button size="medium" type="primary">导出</el-button>
+      <el-button size="medium" @click="dialogFormVisible = true"
+        >新增</el-button
+      >
+      <el-button size="medium">刷新</el-button>
+    </div>
+    <p id="sum">已选{{ num }}项</p>
+    <el-table
+      :data="
+        tableData.filter(
+          (data) =>
+            !search ||
+            data.imageTgzName.toLowerCase().includes(search.toLowerCase())
+        )
+      "
+      ref="multipleTable"
+      tooltip-effect="dark"
+      stripe
+      border
+      fixed
+      style="width: 100%"
+      height="740"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="42"> </el-table-column>
+      <el-table-column fixed prop="imageTgzName" label="影像名称" width="195">
+      </el-table-column>
+      <el-table-column prop="collectTime" label="采集时间" width="95" sortable>
+      </el-table-column>
+      <el-table-column prop="processStatus" label="处理状态" width="78">
+      </el-table-column>
+      <el-table-column prop="longitudeRange" label="经度(°)" width="110">
+      </el-table-column>
+      <el-table-column prop="latitudeRange" label="纬度(°)" width="100">
+      </el-table-column>
+      <el-table-column prop="rangeArea" label="影像面积(km^2)" width="78">
+      </el-table-column>
+      <el-table-column prop="ndwiArea" label="水域面积(km^2)" width="78">
+      </el-table-column>
+      <el-table-column prop="proArea" label="禁养区面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="resArea" label="限养区面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="aquArea" label="养殖区面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="rcaArea" label="筏式养殖面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="rcaCount" label="筏式养殖数量" width="90">
+      </el-table-column>
+      <el-table-column prop="ccaArea" label="网箱养殖面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="ccaCount" label="网箱养殖数量" width="90">
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="145">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 新增对话框-->
+    <el-dialog title="新增数据" :visible.sync="dialogFormVisible" width="500px">
+      <el-form :model="form">
+        <el-form-item label="采集时间">
+          <el-input
+            v-model="form.collectTime"
+            placeholder="yyyy-mm-dd"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="经度范围">
+          <el-input
+            v-model="form.longitudeRange"
+            placeholder="min-max"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="纬度范围">
+          <el-input
+            v-model="form.latitudeRange"
+            placeholder="min-max"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 上传影像压缩包 -->
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   name: "ImageManagement",
   data: function () {
-    return {};
+    return {
+      tableData: [
+        {
+          imageTgzName: "LC81190412013296LGN01",
+          collectTime: "2013-10-23",
+          processStatus: "已处理",
+          longitudeRange: "119.81-119.96",
+          latitudeRange: "26.60-26.70",
+          rangeArea: "100",
+          ndwiArea: "80",
+          proArea: "40",
+          resArea: "30",
+          aquArea: "10",
+          rcaArea: "20",
+          rcaCount: "100",
+          ccaArea: "20",
+          ccaCount: "100",
+        },
+        {
+          imageTgzName: "LC81190412013296LGN01",
+          collectTime: "2013-10-23",
+          processStatus: "已处理",
+          longitudeRange: "119.81-119.96",
+          latitudeRange: "26.60-26.70",
+          rangeArea: "100",
+          ndwiArea: "80",
+          proArea: "40",
+          resArea: "30",
+          aquArea: "10",
+          rcaArea: "20",
+          rcaCount: "100",
+          ccaArea: "20",
+          ccaCount: "100",
+        },
+      ],
+      multipleSelection: [],
+      search: "",
+      num: 2,
+      dialogFormVisible: false,
+      form: {
+        collectTime: "",
+        longitudeRange: "",
+        latitudeRange: "",
+      },
+      formLabelWidth: "100px",
+    };
   },
-  methods: {},
+  methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      this.num = val.length;
+    },
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+  },
 };
 </script>
 
@@ -22,5 +185,20 @@ export default {
   padding: 50px;
   padding-bottom: 0;
   font-size: 20px;
+
+  #settings {
+    // border: 1px solid rgb(0, 0, 0);
+    margin-bottom: 10px;
+    #search {
+      display: inline-block;
+      width: 500px;
+      margin-right: 368px;
+    }
+  }
+
+  #sum {
+    color: rgb(192, 196, 204);
+    font-size: 15px;
+  }
 }
 </style>
