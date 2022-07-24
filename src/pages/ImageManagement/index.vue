@@ -14,7 +14,7 @@
       >
       <el-button size="medium">刷新</el-button>
     </div>
-    <p id="sum">已选{{ num }}项</p>
+    <!-- <p id="sum">已选{{ num }}项</p> 有bug，无法勾选-->
     <el-table
       :data="
         tableData.filter(
@@ -35,7 +35,7 @@
       <el-table-column type="selection" width="42"> </el-table-column>
       <el-table-column fixed prop="imageTgzName" label="影像名称" width="195">
       </el-table-column>
-      <el-table-column prop="collectTime" label="采集时间" width="95" sortable>
+      <el-table-column prop="collectTime" label="采集时间" width="101" sortable>
       </el-table-column>
       <el-table-column prop="processStatus" label="处理状态" width="78">
       </el-table-column>
@@ -61,11 +61,12 @@
       </el-table-column>
       <el-table-column prop="ccaCount" label="网箱养殖数量" width="90">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="145">
+      <!-- <el-table-column fixed="right" label="操作" width="145"> -->
+      <el-table-column fixed="right" label="操作" width="80">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+          <!-- <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button
-          >
+          > -->
           <el-button
             size="mini"
             type="danger"
@@ -98,7 +99,24 @@
         </el-form-item>
       </el-form>
       <!-- 上传影像压缩包 -->
-
+      <el-upload
+        class="upload-demo"
+        ref="upload"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :auto-upload="false"
+      >
+        <el-button slot="trigger" size="small">选取影像文件</el-button>
+        <el-button
+          style="margin-left: 10px"
+          size="small"
+          type="primary"
+          @click="submitUpload"
+          >上传到服务器</el-button
+        >
+      </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false"
@@ -150,7 +168,7 @@ export default {
       ],
       multipleSelection: [],
       search: "",
-      num: 2,
+      num: 0,
       dialogFormVisible: false,
       form: {
         collectTime: "",
@@ -158,6 +176,12 @@ export default {
         latitudeRange: "",
       },
       formLabelWidth: "100px",
+      fileList: [
+        {
+          name: "food.jpeg",
+          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+        },
+      ],
     };
   },
   methods: {
@@ -165,11 +189,20 @@ export default {
       this.multipleSelection = val;
       this.num = val.length;
     },
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
+    // handleEdit(index, row) {
+    //   console.log(index, row);
+    // },
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
     },
   },
 };
