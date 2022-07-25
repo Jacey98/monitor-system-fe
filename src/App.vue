@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="clearfix">
     <PageHeader v-show='this.$route.path !== "/login-page"'></PageHeader>
-    <router-view style='padding-top: 100px; box-sizing: border-box;' class="clearfix"></router-view>
+    <router-view style='padding-top: 80px; box-sizing: border-box;' class="clearfix"></router-view>
   </div>
 </template>
 
