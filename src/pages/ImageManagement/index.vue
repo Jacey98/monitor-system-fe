@@ -53,13 +53,29 @@
       </el-table-column>
       <el-table-column prop="aquArea" label="养殖区面积(km^2)" width="95">
       </el-table-column>
-      <el-table-column prop="rcaArea" label="筏式养殖面积(km^2)" width="95">
+      <el-table-column prop="rcaArea" label="筏式养殖总面积(km^2)" width="95">
       </el-table-column>
-      <el-table-column prop="rcaCount" label="筏式养殖数量" width="90">
+      <el-table-column prop="rcaCount" label="筏式养殖总数量" width="90">
       </el-table-column>
-      <el-table-column prop="ccaArea" label="网箱养殖面积(km^2)" width="95">
+      <el-table-column prop="ccaArea" label="网箱养殖总面积(km^2)" width="95">
       </el-table-column>
-      <el-table-column prop="ccaCount" label="网箱养殖数量" width="90">
+      <el-table-column prop="ccaCount" label="网箱养殖总数量" width="90">
+      </el-table-column>
+      <el-table-column prop="rcaProArea" label="筏式禁养面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="rcaProCount" label="筏式禁养数量" width="90">
+      </el-table-column>
+      <el-table-column prop="ccaProArea" label="网箱禁养面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="ccaProCount" label="网箱禁养数量" width="90">
+      </el-table-column>
+      <el-table-column prop="rcaResArea" label="筏式限养面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="rcaResCount" label="筏式限养数量" width="90">
+      </el-table-column>
+      <el-table-column prop="ccaResArea" label="网箱限养面积(km^2)" width="95">
+      </el-table-column>
+      <el-table-column prop="ccaResCount" label="网箱限养数量" width="90">
       </el-table-column>
       <!-- <el-table-column fixed="right" label="操作" width="145"> -->
       <el-table-column fixed="right" label="操作" width="80">
@@ -139,31 +155,47 @@ export default {
           processStatus: "已处理",
           longitudeRange: "119.81-119.96",
           latitudeRange: "26.60-26.70",
-          rangeArea: "100",
-          ndwiArea: "80",
-          proArea: "40",
-          resArea: "30",
-          aquArea: "10",
-          rcaArea: "20",
-          rcaCount: "100",
-          ccaArea: "20",
-          ccaCount: "100",
+          rangeArea: 100,
+          ndwiArea: 80,
+          proArea: 40,
+          resArea: 30,
+          aquArea: 10,
+          rcaArea: 20,
+          rcaCount: 100,
+          ccaArea: 20,
+          ccaCount: 100,
+          rcaProArea: 10,
+          rcaProCount: 50,
+          ccaProArea: 10,
+          ccaProCount: 50,
+          rcaResArea: 5,
+          rcaResCount: 25,
+          ccaResArea: 5,
+          ccaResCount: 25,
         },
         {
-          imageTgzName: "LC81190412013296LGN01",
-          collectTime: "2013-10-23",
+          imageTgzName: "LC81190412013297LGN01",
+          collectTime: "2013-10-24",
           processStatus: "已处理",
           longitudeRange: "119.81-119.96",
           latitudeRange: "26.60-26.70",
-          rangeArea: "100",
-          ndwiArea: "80",
-          proArea: "40",
-          resArea: "30",
-          aquArea: "10",
-          rcaArea: "20",
-          rcaCount: "100",
-          ccaArea: "20",
-          ccaCount: "100",
+          rangeArea: 100,
+          ndwiArea: 80,
+          proArea: 40,
+          resArea: 30,
+          aquArea: 10,
+          rcaArea: 20,
+          rcaCount: 100,
+          ccaArea: 20,
+          ccaCount: 100,
+          rcaProArea: 10,
+          rcaProCount: 50,
+          ccaProArea: 10,
+          ccaProCount: 50,
+          rcaResArea: 5,
+          rcaResCount: 25,
+          ccaResArea: 5,
+          ccaResCount: 25,
         },
       ],
       multipleSelection: [],
