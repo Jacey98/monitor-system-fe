@@ -56,7 +56,7 @@ export default new VueRouter({
         // 重定向
         {
             path: '*',
-            redirect: '/aquaculture-warning'
+            redirect: '/comparison-analysis'
         },
     ]
 })

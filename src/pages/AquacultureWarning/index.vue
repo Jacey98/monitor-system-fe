@@ -95,7 +95,7 @@ export default {
     };
   },
   methods: {
-    echarts() {
+    echarts() { 
       //初始化chart
       this.chart = Echarts.init(this.$refs.chart);
       //配置数据

@@ -39,9 +39,9 @@
       </el-table-column>
       <el-table-column prop="processStatus" label="处理状态" width="78">
       </el-table-column>
-      <el-table-column prop="longitudeRange" label="经度(°)" width="110">
+      <el-table-column prop="longitudeRange" label="经度范围" width="130">
       </el-table-column>
-      <el-table-column prop="latitudeRange" label="纬度(°)" width="100">
+      <el-table-column prop="latitudeRange" label="纬度范围" width="118">
       </el-table-column>
       <el-table-column prop="rangeArea" label="影像面积(km^2)" width="78">
       </el-table-column>
@@ -153,8 +153,8 @@ export default {
           imageTgzName: "LC81190412013296LGN01",
           collectTime: "2013-10-23",
           processStatus: "已处理",
-          longitudeRange: "119.81-119.96",
-          latitudeRange: "26.60-26.70",
+          longitudeRange: "119.81°-119.96°E",
+          latitudeRange: "26.60°-26.70°N",
           rangeArea: 100,
           ndwiArea: 80,
           proArea: 40,
@@ -177,8 +177,8 @@ export default {
           imageTgzName: "LC81190412013297LGN01",
           collectTime: "2013-10-24",
           processStatus: "已处理",
-          longitudeRange: "119.81-119.96",
-          latitudeRange: "26.60-26.70",
+          longitudeRange: "119.81°-119.96°E",
+          latitudeRange: "26.60°-26.70°N",
           rangeArea: 100,
           ndwiArea: 80,
           proArea: 40,
@@ -197,6 +197,7 @@ export default {
           ccaResArea: 5,
           ccaResCount: 25,
         },
+        
       ],
       multipleSelection: [],
       search: "",

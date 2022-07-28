@@ -12,10 +12,10 @@
           <el-input v-model="form.id" placeholder="请输入8位数字"></el-input>
         </el-form-item>
         <el-form-item label="登录名">
-          <el-input v-model="form.name" placeholder=""></el-input>
+          <el-input v-model="form.name" placeholder="请输入登录名"></el-input>
         </el-form-item>
         <el-form-item label="登录密码">
-          <el-input v-model="form.password" placeholder=""></el-input>
+          <el-input v-model="form.password" placeholder="请输入登录密码"></el-input>
         </el-form-item>
         用户权限<br />
         <el-select
