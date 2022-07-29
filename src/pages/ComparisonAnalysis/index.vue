@@ -35,7 +35,10 @@
     </div>
     <div id="middle">
       <div class="text">{{ text }}</div>
-      <div class="pic" ref="chart"></div>
+      <div id="chart">
+        <div class="pic" ref="chart"></div>
+        <div class="pic" ref="chart2"></div>
+      </div>
     </div>
     <div id="bottom">
       <el-button type="primary" style="margin-right: 40px">导出</el-button>
@@ -54,6 +57,7 @@ export default {
   data: function () {
     return {
       chart: null,
+      chart2: null,
       image: [],
       template: "",
       options1: [
@@ -110,22 +114,33 @@ export default {
       //初始化chart
       this.chart = Echarts.init(this.$refs.chart);
       const item1 = {
-        color: "#F54F4A",
+        color: "#ee6666",
       };
       const item2 = {
-        color: "#FF8C75",
+        color: "#fac858",
       };
       const item3 = {
-        color: "#FFB499",
+        color: "#91cc75",
+      };
+      const item4 = {
+        color: "rgb(115, 178, 255)",
+      };
+      const item5 = {
+        color: "#73c0de",
       };
       //配置数据
 
       let option = {
         title: {
-          text: "aaa",
+          text: "养殖面积组成情况",
+          x: "center",
+          y: "bottom",
+          textStyle: {
+            fontSize: 16,
+          },
         },
         series: {
-          radius: ["15%", "80%"],
+          radius: ["25%", "80%"],
           type: "sunburst",
           sort: undefined,
           emphasis: {
@@ -133,33 +148,62 @@ export default {
           },
           data: [
             {
-              value: 5,
+              name: "禁养区",
               children: [
                 {
-                  value: 1,
-                  itemStyle: item1,
+                  name: "筏式",
+                  value: this.tableData[0].rcaProArea,
+                  itemStyle: item4,
                 },
                 {
-                  value: 2,
+                  name: "网箱",
+                  value: this.tableData[0].ccaProArea,
+                  itemStyle: item5,
                 },
               ],
               itemStyle: item1,
             },
             {
-              value: 10,
+              name: "限养区",
               children: [
                 {
-                  value: 6,
+                  name: "筏式",
+                  value: this.tableData[0].rcaResArea,
 
-                  itemStyle: item3,
+                  itemStyle: item4,
                 },
                 {
-                  value: 2,
+                  name: "网箱",
+                  value: this.tableData[0].ccaResArea,
 
-                  itemStyle: item3,
+                  itemStyle: item5,
                 },
               ],
-              itemStyle: item1,
+              itemStyle: item2,
+            },
+            {
+              name: "养殖区",
+              children: [
+                {
+                  name: "筏式",
+                  value:
+                    this.tableData[0].rcaArea -
+                    this.tableData[0].rcaProArea -
+                    this.tableData[0].rcaResArea,
+
+                  itemStyle: item4,
+                },
+                {
+                  name: "网箱",
+                  value:
+                    this.tableData[0].ccaArea -
+                    this.tableData[0].ccaProArea -
+                    this.tableData[0].ccaResArea,
+
+                  itemStyle: item5,
+                },
+              ],
+              itemStyle: item3,
             },
           ],
           label: {
@@ -174,6 +218,94 @@ export default {
       };
       // 传入数据
       this.chart.setOption(option);
+
+      //初始化chart2
+      this.chart2 = Echarts.init(this.$refs.chart2);
+      //配置数据
+      let option2 = {
+        title: {
+          text: "养殖数量组成情况",
+          x: "center",
+          y: "bottom",
+          textStyle: {
+            fontSize: 16,
+          },
+        },
+        series: {
+          radius: ["25%", "80%"],
+          type: "sunburst",
+          sort: undefined,
+          emphasis: {
+            focus: "ancestor",
+          },
+          data: [
+            {
+              name: "禁养区",
+              children: [
+                {
+                  name: "筏式",
+                  value: this.tableData[0].rcaProCount,
+                  itemStyle: item4,
+                },
+                {
+                  name: "网箱",
+                  value: this.tableData[0].ccaProCount,
+                  itemStyle: item5,
+                },
+              ],
+              itemStyle: item1,
+            },
+            {
+              name: "限养区",
+              children: [
+                {
+                  name: "筏式",
+                  value: this.tableData[0].rcaResCount,
+                  itemStyle: item4,
+                },
+                {
+                  name: "网箱",
+                  value: this.tableData[0].ccaResCount,
+                  itemStyle: item5,
+                },
+              ],
+              itemStyle: item2,
+            },
+            {
+              name: "养殖区",
+              children: [
+                {
+                  name: "筏式",
+                  value:
+                    this.tableData[0].rcaCount -
+                    this.tableData[0].rcaProCount -
+                    this.tableData[0].rcaResCount,
+                  itemStyle: item4,
+                },
+                {
+                  name: "网箱",
+                  value:
+                    this.tableData[0].ccaCount -
+                    this.tableData[0].ccaProCount -
+                    this.tableData[0].ccaResCount,
+                  itemStyle: item5,
+                },
+              ],
+              itemStyle: item3,
+            },
+          ],
+          label: {
+            rotate: "radial",
+          },
+          levels: [],
+          itemStyle: {
+            color: "#ddd",
+            borderWidth: 2,
+          },
+        },
+      };
+      // 传入数据
+      this.chart2.setOption(option2);
     },
   },
   computed: {
@@ -194,7 +326,7 @@ export default {
         data.rcaArea + data.ccaArea
       } 平方千米，养殖数量 ${
         data.rcaCount + data.ccaCount
-      }，具体构成如下图所示。`;
+      }个，具体构成如下图所示。`;
       return res.join(" \n ");
     },
   },
@@ -230,15 +362,18 @@ export default {
     font-size: 16px;
     white-space: pre-line; // 识别换行
     line-height: 2;
-    display: flex;
-    flex-direction: column;
 
-    .pic {
-      display: inline-block;
-      height: 300px;
-      width: 500px;
-      margin: 20px auto 0;
-      border: 1px solid rgb(219, 219, 219);
+    #chart {
+      display: flex;
+      justify-content: center;
+
+      .pic {
+        display: inline-block;
+        height: 300px;
+        width: 300px;
+        margin: 20px 0 0;
+        // border: 1px solid rgb(219, 219, 219);
+      }
     }
   }
   #bottom {
