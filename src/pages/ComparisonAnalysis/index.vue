@@ -114,19 +114,19 @@ export default {
       //初始化chart
       this.chart = Echarts.init(this.$refs.chart);
       const item1 = {
-        color: "#ee6666",
+        color: "rgb(225, 118, 120)",
       };
       const item2 = {
-        color: "#fac858",
+        color: "rgb(231, 141, 138)",
       };
       const item3 = {
-        color: "#91cc75",
+        color: "rgb(237, 164, 156)",
       };
       const item4 = {
-        color: "rgb(115, 178, 255)",
+        color: "rgb(125, 170, 205)",
       };
       const item5 = {
-        color: "#73c0de",
+        color: "rgb(161, 202, 232)",
       };
       //配置数据
 
