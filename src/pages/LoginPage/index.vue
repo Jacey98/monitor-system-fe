@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import {userLogin} from '@/api'
 export default {
   name: "LoginPage",
   data: function () {
@@ -45,9 +46,12 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
-      PubSub.publish("changeActive", 0);
+    async onSubmit() {
+      let name = this.user.name
+      let password = this.user.password
+      // PubSub.publish("changeActive", 0);
+      let res = await userLogin({'name': name, 'password': password})
+      console.log(res.data)
     },
   },
 };
