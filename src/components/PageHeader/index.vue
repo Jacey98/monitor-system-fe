@@ -20,7 +20,7 @@
     </ul>
     <el-dropdown id="right" @command="handleCommand">
       <span class="el-dropdown-link"
-        ><a href="#"> {{ userName }}</a
+        ><a href="#">{{ username }}</a
         ><i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
@@ -33,12 +33,13 @@
 </template>
 
 <script>
+// import { xx } from "@/api";
 import PubSub from "pubsub-js";
 export default {
   name: "PageHeader",
   data: function () {
     return {
-      userName: "admin",
+      username: "",
       activeArr: [
         "showActive",
         "showDisactive",
@@ -63,15 +64,31 @@ export default {
         5: "UserManagement",
         6: "LoginPage",
       };
+      if (index == 5 && localStorage.getItem("authority") != 1) {
+        alert("没有权限！");
+        return;
+      }
       this.$router.push({
         name: map[index],
       });
     },
+    // async handleCommand(command) {
     handleCommand(command) {
+      if (command == 6) {
+        localStorage.removeItem("name");
+        localStorage.removeItem("authority");
+        localStorage.removeItem("token");
+      }
+      // let res = await xx();
+      // console.log(res);
       this.changeActive(0, +command);
     },
   },
+  beforeUpdate() {
+    this.username = localStorage.getItem("name");
+  },
   mounted() {
+    this.username = localStorage.getItem("name");
     this.pid = PubSub.subscribe("changeActive", this.changeActive); //订阅消息
   },
   beforeDestroy() {

@@ -9,9 +9,7 @@
         />
       </div>
       <el-button size="medium" type="primary">导出</el-button>
-      <el-button size="medium" @click="dialogFormVisible = true"
-        >新增</el-button
-      >
+      <el-button size="medium" @click="addImage">新增</el-button>
       <el-button size="medium">刷新</el-button>
     </div>
     <!-- <p id="sum">已选{{ num }}项</p> 有bug，无法勾选-->
@@ -197,7 +195,6 @@ export default {
           ccaResArea: 5,
           ccaResCount: 25,
         },
-        
       ],
       multipleSelection: [],
       search: "",
@@ -218,6 +215,13 @@ export default {
     };
   },
   methods: {
+    addImage() {
+      if (localStorage.getItem("authority") == 1) {
+        this.dialogFormVisible = true;
+      } else {
+        alert("没有权限！");
+      }
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.num = val.length;

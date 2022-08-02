@@ -41,7 +41,7 @@
     </el-dialog>
     <span class="list" v-for="(item, index) in user" :key="item.id">
       <p id="mask" :class="mood"></p>
-      用户ID<el-input v-model="item.id"> </el-input> 登录名<el-input
+      用户ID<el-input disabled v-model="item.id"> </el-input> 登录名<el-input
         v-model="item.name"
       >
       </el-input>

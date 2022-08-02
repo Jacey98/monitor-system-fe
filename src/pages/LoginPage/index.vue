@@ -49,9 +49,20 @@ export default {
     async onSubmit() {
       let name = this.user.name
       let password = this.user.password
-      // PubSub.publish("changeActive", 0);
+      if (!name || !password) {
+        this.$message.error('用户名或密码不能为空');
+        return
+      }
       let res = await userLogin({'name': name, 'password': password})
-      console.log(res.data)
+      // console.log(res)
+      if (res.code === 200) {
+        localStorage.setItem("name", res.data.name)
+        localStorage.setItem("authority", res.data.authority)
+        localStorage.setItem("token", res.data.token)
+        PubSub.publish("changeActive", 0);
+      } else {
+        this.$message.error('用户名或密码错误');
+      }
     },
   },
 };

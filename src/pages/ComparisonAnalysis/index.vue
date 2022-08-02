@@ -326,7 +326,7 @@ export default {
         data.rcaArea + data.ccaArea
       } 平方千米，养殖数量 ${
         data.rcaCount + data.ccaCount
-      }个，具体构成如下图所示。`;
+      } 个，具体构成如下图所示。`;
       return res.join(" \n ");
     },
   },
