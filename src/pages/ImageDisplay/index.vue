@@ -106,56 +106,60 @@
         >
         </el-color-picker>
       </div>
-      <el-button type="primary">确认导出</el-button>
+      <el-button type="primary" @click="exportPic()">确认导出</el-button>
       <el-button>还原设置</el-button>
     </div>
     <div id="display">
-      <img v-show="checked[0]" id="firstImg" src="@/assets/image.png" />
-      <img
-        v-show="checked[1]"
-        src="@/assets/pro.png"
-        :style="`filter: drop-shadow(2740px 0 ${color[0]});`"
-      />
-      <img
-        v-show="checked[2]"
-        src="@/assets/res.png"
-        :style="`filter: drop-shadow(2740px 0 ${color[1]});`"
-      />
-      <img
-        v-show="checked[3]"
-        src="@/assets/aqu.png"
-        :style="`filter: drop-shadow(2740px 0 ${color[2]});`"
-      />
-      <img
-        v-show="checked[4]"
-        src="@/assets/rca.png"
-        :style="`filter: drop-shadow(2740px 0 ${color[3]});`"
-      />
-      <img
-        v-show="checked[5]"
-        src="@/assets/cca.png"
-        :style="`filter: drop-shadow(2740px 0 ${color[4]});`"
-      />
+      <div id="inner">
+        <img v-show="checked[0]" id="firstImg" src="@/assets/image.png" />
+        <canvas v-show="checked[1]" id="canvas1"></canvas>
+        <!-- <img
+          v-show="checked[1]"
+          src="@/assets/pro.png"
+          :style="`filter: drop-shadow(2740px 0 ${color[0]});`"
+        />
+        <img
+          v-show="checked[2]"
+          src="@/assets/res.png"
+          :style="`filter: drop-shadow(2740px 0 ${color[1]});`"
+        />
+        <img
+          v-show="checked[3]"
+          src="@/assets/aqu.png"
+          :style="`filter: drop-shadow(2740px 0 ${color[2]});`"
+        />
+        <img
+          v-show="checked[4]"
+          src="@/assets/rca.png"
+          :style="`filter: drop-shadow(2740px 0 ${color[3]});`"
+        />
+        <img
+          v-show="checked[5]"
+          src="@/assets/cca.png"
+          :style="`filter: drop-shadow(2740px 0 ${color[4]});`"
+        /> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import html2Canvas from "html2canvas";
 export default {
   name: "ImageDisplay",
   data: function () {
     return {
       options: [
         {
-          value: "选项1",
+          value: "LC81190412013296LGN01",
           label: "LC81190412013296LGN01",
         },
         {
-          value: "选项2",
+          value: "LC81190412013297LGN01",
           label: "LC81190412013297LGN01",
         },
       ],
-      value: "选项1",
+      value: "LC81190412013296LGN01",
       checked: [true, false, false, false, false, false],
       color: [
         "rgba(255, 127, 127, 0.5)",
@@ -167,7 +171,86 @@ export default {
       predefineColors: ["#ff4500"],
     };
   },
-  methods: {},
+  methods: {
+    exportPic() {
+      html2Canvas(document.querySelector("#test")).then((canvas) => {
+        let dataURL = canvas.toDataURL("image/png");
+        if (dataURL !== "") {
+          let eleLink = document.createElement("a");
+          eleLink.download = this.value; // 命名
+          eleLink.href = dataURL;
+          eleLink.click();
+        }
+      });
+    },
+    canvasInit(id, png) {
+      let newCanvas = document.querySelector("#" + id);
+      let image = new Image();
+      let ctx = newCanvas.getContext("2d");
+      console.log(1);
+      image.onload = () => {
+        console.log(2);
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        let imageData = ctx.getImageData(
+          0,
+          0,
+          newCanvas.width,
+          newCanvas.width
+        );
+        //获取到每个像素的信息
+        let px = imageData.data;
+        let color = this.color[0].slice(5, -1);
+        console.log(color);
+        for (let i = 0; i < px.length; i += 4) {
+          px[i] = 30; //r
+          px[i + 1] = 30; //g
+          px[i + 2] = 30; //b
+        }
+        ctx.putImageData(imageData, 0, 0);
+      };
+      image.src = png;
+
+      // let newCanvas = document.querySelector("#canvas");
+      // let image = new Image();
+      // // image.src = document.querySelector("#test").src;
+      // // image.src = document.querySelector("#firstImg").src;
+
+      // let ctx = newCanvas.getContext("2d");
+
+      // image.onload = function () {
+      //   ctx.drawImage(image, 0, 0, image.width, image.height);
+      //   // newCanvas.width = image.width;
+      //   // newCanvas.height = image.height;
+      //   // newCanvas
+      //   //   .getContext("2d")
+      //   //   .drawImage(image, 0, 0, image.width, image.height);
+      // };
+      // let imageData = ctx.getImageData(0, 0, newCanvas.width, newCanvas.width);
+      // //获取到每个像素的信息
+      // let px = imageData.data;
+      // console.log(px);
+      // for (let i = 0; i < px.length; i += 4) {
+      //   px[i] = 100; //r
+      //   px[i + 1] = 100; //g
+      //   px[i + 2] = 100; //b
+      //   px[i + 3] = 255; //b
+      // }
+      // console.log(imageData.data);
+      // // ctx = newCanvas.getContext("2d");
+      // // let matrix_obj = ctx.createImageData(newCanvas.width, newCanvas.height);
+      // // matrix_obj.data.set(imageData);
+      // // ctx.putImageData(matrix_obj, 0, 0);
+      // ctx.putImageData(imageData, 0, 0);
+      // var dataUri = newCanvas.toDataURL("image/png");
+      // var link = document.createElement("a");
+      // link.href = dataUri;
+      // link.download = "icon.png";
+      // link.click();
+    },
+  },
+  mounted() {
+    this.canvasInit("canvas1", "@/assets/pro.png");
+  },
 };
 </script>
 
@@ -257,18 +340,30 @@ export default {
     display: inline-block;
     border: 2px solid rgb(189, 199, 219);
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      position: absolute;
-      margin: auto;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    img:not(#firstImg) {
-      left: -2000px;
-      border-right: 740px solid transparent;
+    #inner {
+      width: 100%;
+      height: 100%;
+
+      canvas {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        margin: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      img:not(#firstImg, #test) {
+        left: -2000px;
+        border-right: 740px solid transparent;
+      }
     }
   }
 }

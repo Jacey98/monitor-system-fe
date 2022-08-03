@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
     "element-ui": "^2.15.9",
+    "html2canvas": "^1.4.1",
     "less": "^3.13.1",
     "less-loader": "^5.0.0",
     "pubsub-js": "^1.8.0",
