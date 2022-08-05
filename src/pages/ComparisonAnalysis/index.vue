@@ -41,13 +41,19 @@
       </div>
     </div>
     <div id="bottom">
-      <el-button type="primary" style="margin-right: 40px">导出</el-button>
+      <el-button type="primary" style="margin-right: 40px" @click="exportWord()"
+        >导出</el-button
+      >
       <el-button type="danger">重置</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import JSZipUtils from "jszip-utils";
+import docxtemplater from "docxtemplater";
+import { saveAs } from "file-saver";
+import PizZip from "pizzip";
 let Echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/sunburst"); //按需引入
 require("echarts/lib/component/legend");
@@ -56,6 +62,37 @@ export default {
   name: "ComparisonAnalysis",
   data: function () {
     return {
+      download: {
+        charts1: "",
+        charts2: "",
+        data: {
+          id: 1,
+          imageTgzName: "LC81190412013296LGN01",
+          collectTime: "2013-10-23",
+          processStatus: "已处理",
+          longitudeRange: "119.81°-119.96°E",
+          latitudeRange: "26.60°-26.70°N",
+          rangeArea: 100,
+          ndwiArea: 80,
+          proArea: 40,
+          resArea: 30,
+          aquArea: 10,
+          rcaArea: 20,
+          rcaCount: 100,
+          ccaArea: 20,
+          ccaCount: 100,
+          rcaProArea: 10,
+          rcaProCount: 50,
+          ccaProArea: 10,
+          ccaProCount: 50,
+          rcaResArea: 5,
+          rcaResCount: 25,
+          ccaResArea: 5,
+          ccaResCount: 25,
+          allArea: 40, // 之后选择数据时要计算出这两个字段
+          allCount: 200,
+        },
+      },
       chart: null,
       chart2: null,
       image: [],
@@ -142,6 +179,7 @@ export default {
         series: {
           radius: ["25%", "80%"],
           type: "sunburst",
+          animation: false,
           sort: undefined,
           emphasis: {
             focus: "ancestor",
@@ -218,6 +256,12 @@ export default {
       };
       // 传入数据
       this.chart.setOption(option);
+      this.download.charts1 = this.chart.getDataURL({
+        type: "png", // 导出的格式，可选 png, jpeg
+        pixelRatio: 2, // 导出的图片分辨率比例，默认为 1。
+        // backgroundColor: string,// 导出的图片背景色，默认使用 option 里的 backgroundColor
+        // excludeComponents: Array.<string>  // 忽略组件的列表，例如要忽略 toolbox 就是 ['toolbox'],一般也忽略了'toolbox'这栏就够了
+      });
 
       //初始化chart2
       this.chart2 = Echarts.init(this.$refs.chart2);
@@ -234,6 +278,7 @@ export default {
         series: {
           radius: ["25%", "80%"],
           type: "sunburst",
+          animation: false,
           sort: undefined,
           emphasis: {
             focus: "ancestor",
@@ -306,21 +351,97 @@ export default {
       };
       // 传入数据
       this.chart2.setOption(option2);
+      this.download.charts2 = this.chart2.getDataURL({
+        type: "png", // 导出的格式，可选 png, jpeg
+        pixelRatio: 2, // 导出的图片分辨率比例，默认为 1。
+        // backgroundColor: string,// 导出的图片背景色，默认使用 option 里的 backgroundColor
+        // excludeComponents: Array.<string>  // 忽略组件的列表，例如要忽略 toolbox 就是 ['toolbox'],一般也忽略了'toolbox'这栏就够了
+      });
+    },
+    base64DataURLToArrayBuffer(dataURL) {
+      const base64Regex = /^data:image\/(png|jpg|svg|svg\+xml);base64,/;
+      if (!base64Regex.test(dataURL)) {
+        return false;
+      }
+      const stringBase64 = dataURL.replace(base64Regex, "");
+      let binaryString;
+      if (typeof window !== "undefined") {
+        binaryString = window.atob(stringBase64);
+      } else {
+        binaryString = new Buffer(stringBase64, "base64").toString("binary");
+      }
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        const ascii = binaryString.charCodeAt(i);
+        bytes[i] = ascii;
+      }
+      return bytes.buffer;
+    },
+    // 导出word
+    exportWord() {
+      //这里要引入处理图片的插件，下载docxtemplater后，引入的就在其中了
+      var ImageModule = require("docxtemplater-image-module-free");
+      var that = this;
+      //这里是我的Word路径，在static文件下
+      JSZipUtils.getBinaryContent("/temp.docx", function (error, content) {
+        if (error) {
+          throw error;
+        }
+        let opts = {};
+        opts.centered = true;
+        opts.fileType = "docx";
+        opts.getImage = (tag) => {
+          return that.base64DataURLToArrayBuffer(tag);
+        };
+        opts.getSize = () => {
+          return [300, 300]; //这里可更改输出的图片宽和高
+        };
+        let zip = new PizZip(content);
+        let doc = new docxtemplater();
+        doc.attachModule(new ImageModule(opts));
+        doc.loadZip(zip);
+        doc.setData({
+          ...that.download, //我的最外层包裹一切要导出的数据名称
+        });
+        try {
+          doc.render();
+        } catch (error) {
+          var e = {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            properties: error.properties,
+          };
+          console.log(
+            JSON.stringify({
+              error: e,
+            })
+          );
+          throw error;
+        }
+        var out = doc.getZip().generate({
+          type: "blob",
+          mimeType:
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+        saveAs(out, "test.docx");
+      });
     },
   },
   computed: {
     text() {
       let res = [],
-        data = this.tableData[0];
+        data = this.download.data;
       res[0] = `影像名称：${data.imageTgzName}`;
       res[1] = `采集时间：${data.collectTime}`;
       res[2] = `经度范围：${data.longitudeRange}`;
       res[3] = `纬度范围：${data.latitudeRange}`;
       res[4] = `养殖情况：该影像总面积为 ${
         data.rangeArea
-      } 平方千米，其中水域面积 ${data.ndwiArea} 平方千米，禁养区面积  ${
+      } 平方千米，其中水域面积 ${data.ndwiArea} 平方千米，禁养区面积 ${
         data.proArea
-      } 平方千米，限养区面积  ${data.resArea} 平方千米，养殖区面积  ${
+      } 平方千米，限养区面积 ${data.resArea} 平方千米，养殖区面积 ${
         data.aquArea
       } 平方千米。该区域养殖总面积 ${
         data.rcaArea + data.ccaArea

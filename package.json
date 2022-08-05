@@ -10,14 +10,23 @@
   "dependencies": {
     "axios": "^0.27.2",
     "core-js": "^3.6.5",
+    "docxtemplater": "^3.31.2",
+    "docxtemplater-image-module-free": "^1.1.1",
     "echarts": "^4.8.0",
     "element-ui": "^2.15.9",
+    "file-saver": "^2.0.5",
+    "html-docx-js": "^0.3.1",
     "html2canvas": "^1.4.1",
+    "jszip": "^3.10.1",
+    "jszip-utils": "^0.1.0",
     "less": "^3.13.1",
     "less-loader": "^5.0.0",
+    "open-docxtemplater-image-module": "^1.0.3",
+    "pizzip": "^3.1.1",
     "pubsub-js": "^1.8.0",
     "vue": "^2.6.11",
-    "vue-router": "^3.5.3"
+    "vue-router": "^3.5.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",
@@ -26,6 +35,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "script-loader": "^0.7.2",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

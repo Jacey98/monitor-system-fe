@@ -73,6 +73,7 @@
         <el-color-picker
           size="small"
           v-model="color[0]"
+          @change="canvasInit('canvas0', img[0], color[0])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -80,6 +81,7 @@
         <el-color-picker
           size="small"
           v-model="color[1]"
+          @change="canvasInit('canvas1', img[1], color[1])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -87,6 +89,7 @@
         <el-color-picker
           size="small"
           v-model="color[2]"
+          @change="canvasInit('canvas2', img[2], color[2])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -94,6 +97,7 @@
         <el-color-picker
           size="small"
           v-model="color[3]"
+          @change="canvasInit('canvas3', img[3], color[3])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -101,6 +105,7 @@
         <el-color-picker
           size="small"
           v-model="color[4]"
+          @change="canvasInit('canvas4', img[4], color[4])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -112,32 +117,36 @@
     <div id="display">
       <div id="inner">
         <img v-show="checked[0]" id="firstImg" src="@/assets/image.png" />
-        <canvas v-show="checked[1]" id="canvas1"></canvas>
-        <!-- <img
+        <canvas
           v-show="checked[1]"
-          src="@/assets/pro.png"
-          :style="`filter: drop-shadow(2740px 0 ${color[0]});`"
-        />
-        <img
+          id="canvas0"
+          width="1480"
+          height="1440"
+        ></canvas>
+        <canvas
           v-show="checked[2]"
-          src="@/assets/res.png"
-          :style="`filter: drop-shadow(2740px 0 ${color[1]});`"
-        />
-        <img
+          id="canvas1"
+          width="1480"
+          height="1440"
+        ></canvas>
+        <canvas
           v-show="checked[3]"
-          src="@/assets/aqu.png"
-          :style="`filter: drop-shadow(2740px 0 ${color[2]});`"
-        />
-        <img
+          id="canvas2"
+          width="1480"
+          height="1440"
+        ></canvas>
+        <canvas
           v-show="checked[4]"
-          src="@/assets/rca.png"
-          :style="`filter: drop-shadow(2740px 0 ${color[3]});`"
-        />
-        <img
+          id="canvas3"
+          width="1480"
+          height="1440"
+        ></canvas>
+        <canvas
           v-show="checked[5]"
-          src="@/assets/cca.png"
-          :style="`filter: drop-shadow(2740px 0 ${color[4]});`"
-        /> -->
+          id="canvas4"
+          width="1480"
+          height="1440"
+        ></canvas>
       </div>
     </div>
   </div>
@@ -149,6 +158,13 @@ export default {
   name: "ImageDisplay",
   data: function () {
     return {
+      img: [
+        require("@/assets/pro.png"),
+        require("@/assets/res.png"),
+        require("@/assets/aqu.png"),
+        require("@/assets/rca.png"),
+        require("@/assets/cca.png"),
+      ],
       options: [
         {
           value: "LC81190412013296LGN01",
@@ -173,7 +189,7 @@ export default {
   },
   methods: {
     exportPic() {
-      html2Canvas(document.querySelector("#test")).then((canvas) => {
+      html2Canvas(document.querySelector("#inner")).then((canvas) => {
         let dataURL = canvas.toDataURL("image/png");
         if (dataURL !== "") {
           let eleLink = document.createElement("a");
@@ -183,73 +199,69 @@ export default {
         }
       });
     },
-    canvasInit(id, png) {
+    canvasInit(id, png, color) {
       let newCanvas = document.querySelector("#" + id);
       let image = new Image();
       let ctx = newCanvas.getContext("2d");
-      console.log(1);
+      var getPixelRatio = function (context) {
+        var backingStore =
+          context.backingStorePixelRatio ||
+          context.webkitBackingStorePixelRatio ||
+          context.mozBackingStorePixelRatio ||
+          context.msBackingStorePixelRatio ||
+          context.oBackingStorePixelRatio ||
+          context.backingStorePixelRatio ||
+          1;
+
+        return (window.devicePixelRatio || 1) / backingStore;
+      };
+
+      var ratio = getPixelRatio(ctx);
+
       image.onload = () => {
-        console.log(2);
-        ctx.drawImage(image, 0, 0, image.width, image.height);
-        let imageData = ctx.getImageData(
-          0,
-          0,
-          newCanvas.width,
-          newCanvas.width
-        );
+        let imgW = image.width,
+          imgH = image.height,
+          canW = newCanvas.width,
+          canH = newCanvas.height;
+        if (imgW * canH > imgH * canW)
+          ctx.drawImage(
+            image,
+            0,
+            (canH - (imgH * canW) / imgW) / 2,
+            canW * ratio,
+            ((imgH * canW) / imgW) * ratio
+          );
+        else
+          ctx.drawImage(
+            image,
+            (canW - (imgW * canH) / imgH) / 2,
+            0,
+            ((imgW * canH) / imgH) * ratio,
+            canH * ratio
+          );
+        let imageData = ctx.getImageData(0, 0, canW, canH);
         //获取到每个像素的信息
         let px = imageData.data;
-        let color = this.color[0].slice(5, -1);
-        console.log(color);
+        color = color.slice(5, -1).split(", ");
         for (let i = 0; i < px.length; i += 4) {
-          px[i] = 30; //r
-          px[i + 1] = 30; //g
-          px[i + 2] = 30; //b
+          if (px[i + 3]) {
+            px[i] = color[0]; //r
+            px[i + 1] = color[1]; //g
+            px[i + 2] = color[2]; //b
+            px[i + 3] = color[3] * 255; //b
+          }
         }
         ctx.putImageData(imageData, 0, 0);
       };
       image.src = png;
-
-      // let newCanvas = document.querySelector("#canvas");
-      // let image = new Image();
-      // // image.src = document.querySelector("#test").src;
-      // // image.src = document.querySelector("#firstImg").src;
-
-      // let ctx = newCanvas.getContext("2d");
-
-      // image.onload = function () {
-      //   ctx.drawImage(image, 0, 0, image.width, image.height);
-      //   // newCanvas.width = image.width;
-      //   // newCanvas.height = image.height;
-      //   // newCanvas
-      //   //   .getContext("2d")
-      //   //   .drawImage(image, 0, 0, image.width, image.height);
-      // };
-      // let imageData = ctx.getImageData(0, 0, newCanvas.width, newCanvas.width);
-      // //获取到每个像素的信息
-      // let px = imageData.data;
-      // console.log(px);
-      // for (let i = 0; i < px.length; i += 4) {
-      //   px[i] = 100; //r
-      //   px[i + 1] = 100; //g
-      //   px[i + 2] = 100; //b
-      //   px[i + 3] = 255; //b
-      // }
-      // console.log(imageData.data);
-      // // ctx = newCanvas.getContext("2d");
-      // // let matrix_obj = ctx.createImageData(newCanvas.width, newCanvas.height);
-      // // matrix_obj.data.set(imageData);
-      // // ctx.putImageData(matrix_obj, 0, 0);
-      // ctx.putImageData(imageData, 0, 0);
-      // var dataUri = newCanvas.toDataURL("image/png");
-      // var link = document.createElement("a");
-      // link.href = dataUri;
-      // link.download = "icon.png";
-      // link.click();
     },
   },
   mounted() {
-    this.canvasInit("canvas1", "@/assets/pro.png");
+    this.canvasInit("canvas0", this.img[0], this.color[0]);
+    this.canvasInit("canvas1", this.img[1], this.color[1]);
+    this.canvasInit("canvas2", this.img[2], this.color[2]);
+    this.canvasInit("canvas3", this.img[3], this.color[3]);
+    this.canvasInit("canvas4", this.img[4], this.color[4]);
   },
 };
 </script>
@@ -348,10 +360,10 @@ export default {
         position: absolute;
         left: 0px;
         top: 0px;
-        width: 100%;
-        height: 100%;
+        width: 740px;
+        height: 720px;
       }
-      img {
+      #firstImg {
         max-width: 100%;
         max-height: 100%;
         position: absolute;
@@ -359,10 +371,6 @@ export default {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-      }
-      img:not(#firstImg, #test) {
-        left: -2000px;
-        border-right: 740px solid transparent;
       }
     }
   }

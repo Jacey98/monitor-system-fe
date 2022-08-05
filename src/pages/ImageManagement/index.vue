@@ -8,7 +8,9 @@
           prefix-icon="el-icon-search"
         />
       </div>
-      <el-button size="medium" type="primary">导出</el-button>
+      <el-button size="medium" type="primary" @click="downloadExcel"
+        >导出</el-button
+      >
       <el-button size="medium" @click="addImage">新增</el-button>
       <el-button size="medium">刷新</el-button>
     </div>
@@ -142,6 +144,9 @@
 </template>
 
 <script>
+import Blob from "@/excel/Blob.js";
+import Export2Excel from "@/excel/export2Excel.js";
+
 export default {
   name: "ImageManagement",
   data: function () {
@@ -240,6 +245,78 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
+    },
+    // 列表下载
+    downloadExcel() {
+      if (!this.multipleSelection.length) {
+        alert("请选择数据!");
+        return;
+      }
+      this.excelData = this.multipleSelection; // multipleSelection是一个数组，存储表格中选择的行的数据。
+      this.export2Excel();
+    },
+    // 数据写入excel
+    export2Excel() {
+      var that = this;
+      require.ensure([], () => {
+        const { export_json_to_excel } = require("@/excel/export2Excel"); // 这里必须使用绝对路径，使用@/+存放export2Excel的路径
+        const tHeader = [
+          "影像名称",
+          "采集时间",
+          "处理状态",
+          "经度范围",
+          "纬度范围",
+          "影像面积(km^2)",
+          "水域面积(km^2)",
+          "禁养区面积(km^2)",
+          "限养区面积(km^2)",
+          "养殖区面积(km^2)",
+          "筏式养殖总面积(km^2)",
+          "筏式养殖总数量",
+          "网箱养殖总面积(km^2)",
+          "网箱养殖总数量",
+          "筏式禁养面积(km^2)",
+          "筏式禁养数量",
+          "网箱禁养面积(km^2)",
+          "网箱禁养数量",
+          "筏式限养面积(km^2)",
+          "筏式限养数量",
+          "网箱限养面积(km^2)",
+          "网箱限养数量",
+        ]; // 导出的表头名信息
+        const filterVal = [
+          "imageTgzName",
+          "collectTime",
+          "processStatus",
+          "longitudeRange",
+          "latitudeRange",
+          "rangeArea",
+          "ndwiArea",
+          "proArea",
+          "resArea",
+          "aquArea",
+          "rcaArea",
+          "rcaCount",
+          "ccaArea",
+          "ccaCount",
+          "rcaProArea",
+          "rcaProCount",
+          "ccaProArea",
+          "ccaProCount",
+          "rcaResArea",
+          "rcaResCount",
+          "ccaResArea",
+          "ccaResCount",
+        ]; // 导出的表头字段名，需要导出表格字段名
+        const list = that.excelData;
+        const data = that.formatJson(filterVal, list);
+
+        export_json_to_excel(tHeader, data, "test"); // 导出的表格名称，根据需要自己命名
+      });
+    },
+    // 格式转换，直接复制即可
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) => filterVal.map((j) => v[j]));
     },
   },
 };
