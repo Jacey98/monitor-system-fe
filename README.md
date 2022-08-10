@@ -1,24 +1,24 @@
-# monitor-system-fe
+# 近海养殖区智能监测系统-前端部分
 
-## Project setup
+## 项目运行
 ```
+git clone
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 简介
+提供近海养殖区的自动识别、影像展示、数据管理、分析预警、用户管理等功能
 
-### Lints and fixes files
-```
-npm run lint
-```
+主要用到HTML、CSS、JavaScript、vue、vue-cli、vue-router、Element-UI、Echarts、axios
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+按功能拆分为八个组件：PageHeader、HomePage、ImageDisplay、ImageManagement、AquacultureWarning、ComparisonAnalysis、UserManagement 、LoginPage
+
+## 部分页面预览
+![用户登录](./public/LoginPage.png)
+
+![影像展示](./public/ImageDisplay.png)
+
+![对比分析](./public/ComparisonAnalysis.png)
+
+![用户管理](./public/UserManagement.png)
