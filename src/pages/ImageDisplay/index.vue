@@ -11,9 +11,9 @@
       >
         <el-option
           v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item"
+          :label="item"
+          :value="item"
         >
         </el-option>
       </el-select>
@@ -154,6 +154,7 @@
 
 <script>
 import html2Canvas from "html2canvas";
+import { imageImageList } from "@/api";
 export default {
   name: "ImageDisplay",
   data: function () {
@@ -165,17 +166,8 @@ export default {
         require("@/assets/rca.png"),
         require("@/assets/cca.png"),
       ],
-      options: [
-        {
-          value: "LC81190412013296LGN01",
-          label: "LC81190412013296LGN01",
-        },
-        {
-          value: "LC81190412013297LGN01",
-          label: "LC81190412013297LGN01",
-        },
-      ],
-      value: "LC81190412013296LGN01",
+      options: [],
+      value: "",
       checked: [true, false, false, false, false, false],
       color: [
         "rgba(255, 127, 127, 0.5)",
@@ -188,6 +180,18 @@ export default {
     };
   },
   methods: {
+    async getImageList() {
+      let res = await imageImageList();
+      if (res.code === 200) {
+        this.options = res.data;
+      } else {
+        this.$message.error({
+          duration: 2000,
+          message: res.msg,
+        });
+      }
+      // console.log(this.options);
+    },
     exportPic() {
       html2Canvas(document.querySelector("#inner")).then((canvas) => {
         let dataURL = canvas.toDataURL("image/png");
@@ -255,6 +259,15 @@ export default {
       };
       image.src = png;
     },
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler(newValue, oldValue) {},
+    },
+  },
+  created() {
+    this.getImageList();
   },
   mounted() {
     this.canvasInit("canvas0", this.img[0], this.color[0]);

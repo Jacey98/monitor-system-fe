@@ -61,7 +61,10 @@ export default {
         localStorage.setItem("token", res.data.token)
         PubSub.publish("changeActive", 0);
       } else {
-        this.$message.error('用户名或密码错误');
+        this.$message.error({
+          duration: 2000,
+          message: res.msg,
+        });
       }
     },
   },
