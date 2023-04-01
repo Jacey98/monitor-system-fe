@@ -75,22 +75,52 @@ export default {
     return {
       user: [
         {
-          id: "18888888",
-          name: "zsafsafa",
+          id: "120220001",
+          name: "admin",
           password: "safsdfdd",
           authority: "管理员",
         },
         {
-          id: "28888888",
-          name: "zsafsafa",
+          id: "120220002",
+          name: "admin2",
           password: "safsdfdd",
           authority: "管理员",
         },
         {
-          id: "38888888",
-          name: "zsafsafa",
+          id: "120220003",
+          name: "admin3",
           password: "safsdfdd",
           authority: "管理员",
+        },
+        {
+          id: "220220004",
+          name: "user",
+          password: "safsdfdd",
+          authority: "普通用户",
+        },
+        {
+          id: "220220005",
+          name: "user2",
+          password: "safsdfdd",
+          authority: "普通用户",
+        },
+        {
+          id: "120220003",
+          name: "admin3",
+          password: "safsdfdd",
+          authority: "管理员",
+        },
+        {
+          id: "220220004",
+          name: "user1",
+          password: "safsdfdd",
+          authority: "普通用户",
+        },
+        {
+          id: "220220005",
+          name: "user2",
+          password: "safsdfdd",
+          authority: "普通用户",
         },
       ],
       options: [

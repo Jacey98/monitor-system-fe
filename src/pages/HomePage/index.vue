@@ -36,6 +36,8 @@ export default {
 #main {
   min-height: 100%;
   background-color: white;
+  background-image: url("../bg2.png");
+  background-size: cover;
 
   #nav {
     margin: auto;
