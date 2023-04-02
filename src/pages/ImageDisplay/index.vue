@@ -73,7 +73,7 @@
         <el-color-picker
           size="small"
           v-model="color[0]"
-          @change="canvasInit('canvas0', img[0], color[0])"
+          @change="canvasInit('canvas0', img[1], color[0])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -81,7 +81,7 @@
         <el-color-picker
           size="small"
           v-model="color[1]"
-          @change="canvasInit('canvas1', img[1], color[1])"
+          @change="canvasInit('canvas1', img[2], color[1])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -89,7 +89,7 @@
         <el-color-picker
           size="small"
           v-model="color[2]"
-          @change="canvasInit('canvas2', img[2], color[2])"
+          @change="canvasInit('canvas2', img[3], color[2])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -97,7 +97,7 @@
         <el-color-picker
           size="small"
           v-model="color[3]"
-          @change="canvasInit('canvas3', img[3], color[3])"
+          @change="canvasInit('canvas3', img[4], color[3])"
           show-alpha
           :predefine="predefineColors"
         >
@@ -105,18 +105,19 @@
         <el-color-picker
           size="small"
           v-model="color[4]"
-          @change="canvasInit('canvas4', img[4], color[4])"
+          @change="canvasInit('canvas4', img[5], color[4])"
           show-alpha
           :predefine="predefineColors"
         >
         </el-color-picker>
       </div>
       <el-button type="primary" @click="exportPic()">确认导出</el-button>
-      <el-button>还原设置</el-button>
+      <el-button @click="clearSet()">还原设置</el-button>
     </div>
     <div id="display">
       <div id="inner">
-        <img v-show="checked[0]" id="firstImg" src="@/assets/image.png" />
+        <!-- <img v-show="checked[0]" id="firstImg" :src="test" /> -->
+        <img v-show="checked[0]" id="firstImg" :src="img[0]" />
         <canvas
           v-show="checked[1]"
           id="canvas0"
@@ -155,20 +156,21 @@
 <script>
 import html2Canvas from "html2canvas";
 import { imageImageList } from "@/api";
+import { imageImageLayers } from "@/api";
 export default {
   name: "ImageDisplay",
   data: function () {
     return {
       img: [
-        require("@/assets/pro.png"),
-        require("@/assets/res.png"),
-        require("@/assets/aqu.png"),
-        require("@/assets/rca.png"),
-        require("@/assets/cca.png"),
+        // require("@/assets/pro.png"),
+        // require("@/assets/res.png"),
+        // require("@/assets/aqu.png"),
+        // require("@/assets/rca.png"),
+        // require("@/assets/cca.png"),
       ],
       options: [],
       value: "",
-      checked: [true, false, false, false, false, false],
+      checked: [false, false, false, false, false, false],
       color: [
         "rgba(255, 127, 127, 0.5)",
         "rgba(255, 235, 175, 0.5)",
@@ -176,6 +178,7 @@ export default {
         "rgba(115, 178, 255, 1)",
         "rgba(255, 127, 127, 1)",
       ],
+      // test: require("@/assets/pro.png"),
       predefineColors: ["#ff4500"],
     };
   },
@@ -192,21 +195,70 @@ export default {
       }
       // console.log(this.options);
     },
+    async getImageLayers() {
+      let res = await imageImageLayers({ imageTgzName: this.value });
+      if (res.code === 200) {
+        this.img = res.data.map((v) => "data:image/png;base64, " + v);
+        // this.img = res.data.map((v) => require(`${v}`));
+        // this.test = require(`${res.data[0]}`);
+        // this.$set(this.img, 0, res.data[0]);
+      } else {
+        this.$message.error({
+          duration: 2000,
+          message: res.msg,
+        });
+      }
+      // console.log(this.img);
+      this.$set(this.checked, 0, true);
+      // console.log(this.checked);
+      this.canvasClear("canvas0");
+      this.canvasClear("canvas1");
+      this.canvasClear("canvas2");
+      this.canvasClear("canvas3");
+      this.canvasClear("canvas4");
+      this.canvasInit("canvas0", this.img[1], this.color[0]);
+      this.canvasInit("canvas1", this.img[2], this.color[1]);
+      this.canvasInit("canvas2", this.img[3], this.color[2]);
+      this.canvasInit("canvas3", this.img[4], this.color[3]);
+      this.canvasInit("canvas4", this.img[5], this.color[4]);
+    },
     exportPic() {
-      html2Canvas(document.querySelector("#inner")).then((canvas) => {
-        let dataURL = canvas.toDataURL("image/png");
-        if (dataURL !== "") {
-          let eleLink = document.createElement("a");
-          eleLink.download = this.value; // 命名
-          eleLink.href = dataURL;
-          eleLink.click();
-        }
-      });
+      if (!this.value) {
+        this.$message.error({
+          duration: 2000,
+          message: "未选择影像",
+        });
+      } else {
+        html2Canvas(document.querySelector("#inner")).then((canvas) => {
+          let dataURL = canvas.toDataURL("image/png");
+          if (dataURL !== "") {
+            let eleLink = document.createElement("a");
+            eleLink.download = this.value; // 命名
+            eleLink.href = dataURL;
+            eleLink.click();
+          }
+        });
+      }
+    },
+    clearSet() {
+      this.checked = [true, false, false, false, false, false];
+      this.color = [
+        "rgba(255, 127, 127, 0.5)",
+        "rgba(255, 235, 175, 0.5)",
+        "rgba(115, 178, 255, 0.5)",
+        "rgba(115, 178, 255, 1)",
+        "rgba(255, 127, 127, 1)",
+      ];
+      this.canvasInit("canvas0", this.img[1], this.color[0]);
+      this.canvasInit("canvas1", this.img[2], this.color[1]);
+      this.canvasInit("canvas2", this.img[3], this.color[2]);
+      this.canvasInit("canvas3", this.img[4], this.color[3]);
+      this.canvasInit("canvas4", this.img[5], this.color[4]);
     },
     canvasInit(id, png, color) {
       let newCanvas = document.querySelector("#" + id);
       let image = new Image();
-      let ctx = newCanvas.getContext("2d");
+      let ctx = newCanvas.getContext("2d", { willReadFrequently: true });
       var getPixelRatio = function (context) {
         var backingStore =
           context.backingStorePixelRatio ||
@@ -258,24 +310,29 @@ export default {
         ctx.putImageData(imageData, 0, 0);
       };
       image.src = png;
+      // console.log(image)
+    },
+    canvasClear(id) {
+      let newCanvas = document.querySelector("#" + id);
+      let ctx = newCanvas.getContext("2d", { willReadFrequently: true });
+      var w = newCanvas.width;
+      var h = newCanvas.height;
+      ctx.clearRect(0, 0, w, h);
     },
   },
   watch: {
     value: {
-      deep: true,
-      handler(newValue, oldValue) {},
+      // deep: true,
+      handler(newValue, oldValue) {
+        // console.log(newValue, oldValue);
+        this.getImageLayers();
+      },
     },
   },
   created() {
     this.getImageList();
   },
-  mounted() {
-    this.canvasInit("canvas0", this.img[0], this.color[0]);
-    this.canvasInit("canvas1", this.img[1], this.color[1]);
-    this.canvasInit("canvas2", this.img[2], this.color[2]);
-    this.canvasInit("canvas3", this.img[3], this.color[3]);
-    this.canvasInit("canvas4", this.img[4], this.color[4]);
-  },
+  mounted() {},
 };
 </script>
 
