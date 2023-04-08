@@ -9,3 +9,9 @@ export const imageImageList = () => requests({ url: '/image/imageList', method: 
 
 // 获取影像各图层
 export const imageImageLayers = (data) => requests({ url: '/image/imageLayers', params: data, method: 'post' })
+
+// 获取影像名称列表
+export const imageAllImages = () => requests({ url: '/image/allImages', method: 'get' })
+
+// 获取影像各图层
+export const imageDeleteImage = (data) => requests({ url: '/image/deleteImage', params: data, method: 'post' })
