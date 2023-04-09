@@ -100,36 +100,68 @@
     </el-table>
     <!-- 新增对话框-->
     <el-dialog title="新增数据" :visible.sync="dialogFormVisible" width="500px">
-      <el-form :model="form">
-        <el-form-item label="采集时间">
-          <el-input
+      <el-form :model="form" label-position="top">
+        <el-form-item label="采集时间" required>
+          <el-date-picker
+            type="date"
+            placeholder="选择时间"
             v-model="form.collectTime"
-            placeholder="yyyy-mm-dd"
-          ></el-input>
+            style="width: 100%"
+            placement="bottom-start"
+          ></el-date-picker>
         </el-form-item>
-        <el-form-item label="经度范围">
-          <el-input
-            v-model="form.longitudeRange"
-            placeholder="min-max"
-          ></el-input>
+
+        <el-form-item label="经度范围" required>
+          <el-col :span="11">
+            <el-input
+              v-model="form.longitudeMin"
+              placeholder="经度下限"
+            ></el-input>
+          </el-col>
+          <el-col class="line" :span="1" style="margin-left: 16px">-</el-col>
+          <el-col :span="11">
+            <el-input
+              v-model="form.longitudeMax"
+              placeholder="经度上限"
+            ></el-input>
+          </el-col>
         </el-form-item>
-        <el-form-item label="纬度范围">
-          <el-input
-            v-model="form.latitudeRange"
-            placeholder="min-max"
-          ></el-input>
+
+        <el-form-item label="纬度范围" required>
+          <el-col :span="11">
+            <el-input
+              v-model="form.latitudeMin"
+              placeholder="纬度下限"
+            ></el-input>
+          </el-col>
+          <el-col class="line" :span="1" style="margin-left: 16px">-</el-col>
+          <el-col :span="11">
+            <el-input
+              v-model="form.latitudeMax"
+              placeholder="纬度上限"
+            ></el-input>
+          </el-col>
         </el-form-item>
       </el-form>
+
       <!-- 上传影像压缩包 -->
       <el-upload
+        ref="upload"
+        action="action"
+        :show-file-list="false"
+        :http-request="fileUpload"
+      >
+        <!-- <el-upload
         class="upload-demo"
         ref="upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://127.0.0.1:5000/imageAdd"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :file-list="fileList"
+        :data="form"
+        :limit='1'
         :auto-upload="false"
-      >
+      > -->
         <el-button slot="trigger" size="small">选取影像文件</el-button>
         <el-button
           style="margin-left: 10px"
@@ -152,9 +184,10 @@
 <script>
 import { imageAllImages } from "@/api";
 import { imageDeleteImage } from "@/api";
+import { imageImageAdd } from "@/api";
 import Blob from "@/excel/Blob.js";
 import Export2Excel from "@/excel/export2Excel.js";
-
+const axios = require("axios");
 export default {
   name: "ImageManagement",
   data: function () {
@@ -191,15 +224,18 @@ export default {
       num: 0,
       dialogFormVisible: false,
       form: {
+        file: {},
         collectTime: "",
-        longitudeRange: "",
-        latitudeRange: "",
+        longitudeMin: "",
+        longitudeMax: "",
+        latitudeMin: "",
+        latitudeMax: "",
       },
       formLabelWidth: "100px",
       fileList: [
         {
-          name: "food.jpeg",
-          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+          name: "",
+          url: "",
         },
       ],
     };
@@ -259,15 +295,29 @@ export default {
         alert("无权限！");
       }
     },
-    submitUpload() {
-      this.$refs.upload.submit();
+    fileUpload(item) {
+      this.form.file = item.file;
+      // console.log(this.form.file);
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    async submitUpload() {
+      // this.$refs.upload.submit();
+      console.log(this.form.file);
+      let fd = new FormData();
+      fd.append("file", this.form.file);
+      fd.append("collectTime", this.form.collectTime);
+      fd.append("longitudeMin", this.form.longitudeMin);
+      fd.append("longitudeMax", this.form.longitudeMax);
+      fd.append("latitudeMin", this.form.latitudeMin);
+      fd.append("latitudeMax", this.form.latitudeMax);
+      // console.log(fd);
+      let res = await imageImageAdd(fd);
     },
-    handlePreview(file) {
-      console.log(file);
-    },
+    // handleRemove(file, fileList) {
+    //   console.log(file, fileList);
+    // },
+    // handlePreview(file) {
+    //   console.log(file);
+    // },
     // 列表下载
     downloadExcel() {
       if (!this.multipleSelection.length) {
