@@ -17,4 +17,4 @@ export const imageAllImages = () => requests({ url: '/image/allImages', method: 
 export const imageDeleteImage = (data) => requests({ url: '/image/deleteImage', params: data, method: 'post' })
 
 // 新增影像
-export const imageImageAdd = (data) => requests({ url: '/image/imageAdd', data: data, method: 'post', headers: { "Content-Type": "multipart/form-data" } })
+export const imageImageAdd = (data) => requests({ url: '/image/imageAdd', data: data, method: 'post', timeout: 500000, headers: { "Content-Type": "multipart/form-data" } })

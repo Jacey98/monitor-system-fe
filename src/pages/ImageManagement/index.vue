@@ -146,36 +146,18 @@
 
       <!-- 上传影像压缩包 -->
       <el-upload
+        class="upload"
         ref="upload"
         action="action"
-        :show-file-list="false"
         :http-request="fileUpload"
+        :limit="1"
+        :on-exceed="handleExceed"
       >
-        <!-- <el-upload
-        class="upload-demo"
-        ref="upload"
-        action="http://127.0.0.1:5000/imageAdd"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :file-list="fileList"
-        :data="form"
-        :limit='1'
-        :auto-upload="false"
-      > -->
         <el-button slot="trigger" size="small">选取影像文件</el-button>
-        <el-button
-          style="margin-left: 10px"
-          size="small"
-          type="primary"
-          @click="submitUpload"
-          >上传到服务器</el-button
-        >
       </el-upload>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="cancleUpload">取 消</el-button>
+        <el-button type="primary" @click="submitUpload">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -299,18 +281,80 @@ export default {
       this.form.file = item.file;
       // console.log(this.form.file);
     },
-    async submitUpload() {
+    cancleUpload() {
+      this.dialogFormVisible = false;
+      this.form = {
+        file: {},
+        collectTime: "",
+        longitudeMin: "",
+        longitudeMax: "",
+        latitudeMin: "",
+        latitudeMax: "",
+      };
+      this.fileList = [
+        {
+          name: "",
+          url: "",
+        },
+      ];
+      this.$refs.upload.clearFiles();
+    },
+    submitUpload() {
       // this.$refs.upload.submit();
-      console.log(this.form.file);
+      // console.log(this.form.file);
+      if (
+        JSON.stringify(this.form.file) !== "{}" &&
+        this.form.collectTime &&
+        this.form.longitudeMin &&
+        this.form.longitudeMax &&
+        this.form.latitudeMin &&
+        this.form.latitudeMax
+      ) {
+        this.submit();
+      } else {
+        alert("请完整填写数据！");
+      }
+    },
+    formatDate(date) {
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      var d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      return y + "-" + m + "-" + d;
+    },
+    async submit() {
       let fd = new FormData();
       fd.append("file", this.form.file);
-      fd.append("collectTime", this.form.collectTime);
+      fd.append("collectTime", this.formatDate(this.form.collectTime));
       fd.append("longitudeMin", this.form.longitudeMin);
       fd.append("longitudeMax", this.form.longitudeMax);
       fd.append("latitudeMin", this.form.latitudeMin);
       fd.append("latitudeMax", this.form.latitudeMax);
       // console.log(fd);
+      setTimeout(() => {
+        this.$message.info({
+          duration: 500000,
+          message: "正在上传，请稍后",
+        });
+      }, 0);
       let res = await imageImageAdd(fd);
+      this.$message.closeAll();
+      if (res.code === 200) {
+        this.cancleUpload();
+        this.$message.success({
+          duration: 2000,
+          message: res.msg,
+        });
+      } else {
+        this.$message.error({
+          duration: 2000,
+          message: res.msg,
+        });
+      }
+    },
+    handleExceed() {
+      this.$message.warning("只能上传 1 个文件");
     },
     // handleRemove(file, fileList) {
     //   console.log(file, fileList);
@@ -396,6 +440,9 @@ export default {
   created() {
     this.getAllImages();
   },
+  // mounted() {
+  //   window.vue = this;
+  // },
 };
 </script>
 

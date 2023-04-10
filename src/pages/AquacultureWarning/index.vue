@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { imageAllImages } from "@/api";
 let Echarts = require("echarts/lib/echarts");
 require("echarts/lib/chart/bar"); //按需引入 bar柱状图
 require("echarts/lib/chart/line"); //按需引入 line折线图
@@ -36,122 +37,164 @@ export default {
       chart: null,
       chart2: null,
       value: [
-        {
-          id: 1,
-          imageTgzName: "LC81180422015135LGN00",
-          collectTime: "2015-05-15",
-          rcaArea: 11.26,
-          ccaArea: 0.12,
-          rcaProArea: 4.43,
-          ccaProArea: 0.0,
-          rcaResArea: 5.19,
-          ccaResArea: 0.11,
-        },
-        {
-          id: 2,
-          imageTgzName: "LC81180422017220LGN00",
-          collectTime: "2017-08-08",
-          rcaArea: 9.99,
-          ccaArea: 6.92,
-          rcaProArea: 5.12,
-          ccaProArea: 2.11,
-          rcaResArea: 3.9,
-          ccaResArea: 4.43,
-        },
-        {
-          id: 3,
-          imageTgzName: "LC81180422017268LGN00",
-          collectTime: "2017-09-25",
-          rcaArea: 24.5,
-          ccaArea: 4.25,
-          rcaProArea: 10.76,
-          ccaProArea: 1.15,
-          rcaResArea: 11.71,
-          ccaResArea: 913.0,
-        },
-        {
-          id: 4,
-          imageTgzName: "LC81180422017300LGN00",
-          collectTime: "2017-10-27",
-          rcaArea: 24.34,
-          ccaArea: 6.02,
-          rcaProArea: 10.69,
-          ccaProArea: 1.84,
-          rcaResArea: 11.45,
-          ccaResArea: 865.0,
-        },
-        {
-          id: 5,
-          imageTgzName: "LC81190412017307LGN00",
-          collectTime: "2017-11-03",
-          rcaArea: 27.84,
-          ccaArea: 3.0,
-          rcaProArea: 11.61,
-          ccaProArea: 0.98,
-          rcaResArea: 13.38,
-          ccaResArea: 1.7,
-        },
+        // {
+        //   id: 1,
+        //   imageTgzName: "LC81180422015135LGN00",
+        //   collectTime: "2015-05-15",
+        //   rcaArea: 11.26,
+        //   ccaArea: 0.12,
+        //   rcaProArea: 4.43,
+        //   ccaProArea: 0.0,
+        //   rcaResArea: 5.19,
+        //   ccaResArea: 0.11,
+        // },
+        // {
+        //   id: 2,
+        //   imageTgzName: "LC81180422017220LGN00",
+        //   collectTime: "2017-08-08",
+        //   rcaArea: 9.99,
+        //   ccaArea: 6.92,
+        //   rcaProArea: 5.12,
+        //   ccaProArea: 2.11,
+        //   rcaResArea: 3.9,
+        //   ccaResArea: 4.43,
+        // },
+        // {
+        //   id: 3,
+        //   imageTgzName: "LC81180422017268LGN00",
+        //   collectTime: "2017-09-25",
+        //   rcaArea: 24.5,
+        //   ccaArea: 4.25,
+        //   rcaProArea: 10.76,
+        //   ccaProArea: 1.15,
+        //   rcaResArea: 11.71,
+        //   ccaResArea: 913.0,
+        // },
+        // {
+        //   id: 4,
+        //   imageTgzName: "LC81180422017300LGN00",
+        //   collectTime: "2017-10-27",
+        //   rcaArea: 24.34,
+        //   ccaArea: 6.02,
+        //   rcaProArea: 10.69,
+        //   ccaProArea: 1.84,
+        //   rcaResArea: 11.45,
+        //   ccaResArea: 865.0,
+        // },
+        // {
+        //   id: 5,
+        //   imageTgzName: "LC81190412017307LGN00",
+        //   collectTime: "2017-11-03",
+        //   rcaArea: 27.84,
+        //   ccaArea: 3.0,
+        //   rcaProArea: 11.61,
+        //   ccaProArea: 0.98,
+        //   rcaResArea: 13.38,
+        //   ccaResArea: 1.7,
+        // },
       ],
       value2: [
-        {
-          id: 1,
-          imageTgzName: "LC81180422015103LGN01",
-          collectTime: "2015-04-13",
-          rcaArea: 8.05,
-          ccaArea: 2.3,
-          rcaProArea: 3.74,
-          ccaProArea: 0.15,
-          rcaResArea: 3.61,
-          ccaResArea: 2.09,
-        },
-        {
-          id: 2,
-          imageTgzName: "LC81180422015327LGN01",
-          collectTime: "2015-11-23",
-          rcaArea: 18.48,
-          ccaArea: 3.82,
-          rcaProArea: 7.5,
-          ccaProArea: 0.61,
-          rcaResArea: 8.88,
-          ccaResArea: 3.09,
-        },
-        {
-          id: 3,
-          imageTgzName: "LC81190412016065LGN00",
-          collectTime: "2016-03-05",
-          rcaArea: 27.89,
-          ccaArea: 5.3,
-          rcaProArea: 12.12,
-          ccaProArea: 0.8,
-          rcaResArea: 13.04,
-          ccaResArea: 4.32,
-        },
-        {
-          id: 4,
-          imageTgzName: "LC81180422017092LGN01",
-          collectTime: "2017-04-02",
-          rcaArea: 28.96,
-          ccaArea: 5.18,
-          rcaProArea: 11.74,
-          ccaProArea: 1.2,
-          rcaResArea: 14.42,
-          ccaResArea: 3.72,
-        },
-        {
-          id: 5,
-          imageTgzName: "LC81190412017355LGN00",
-          collectTime: "2017-12-21",
-          rcaArea: 17.61,
-          ccaArea: 3.38,
-          rcaProArea: 6.55,
-          ccaProArea: 1.02,
-          rcaResArea: 8.92,
-          ccaResArea: 2.09,
-        },
+        // {
+        //   id: 1,
+        //   imageTgzName: "LC81180422015103LGN01",
+        //   collectTime: "2015-04-13",
+        //   rcaArea: 8.05,
+        //   ccaArea: 2.3,
+        //   rcaProArea: 3.74,
+        //   ccaProArea: 0.15,
+        //   rcaResArea: 3.61,
+        //   ccaResArea: 2.09,
+        // },
+        // {
+        //   id: 2,
+        //   imageTgzName: "LC81180422015327LGN01",
+        //   collectTime: "2015-11-23",
+        //   rcaArea: 18.48,
+        //   ccaArea: 3.82,
+        //   rcaProArea: 7.5,
+        //   ccaProArea: 0.61,
+        //   rcaResArea: 8.88,
+        //   ccaResArea: 3.09,
+        // },
+        // {
+        //   id: 3,
+        //   imageTgzName: "LC81190412016065LGN00",
+        //   collectTime: "2016-03-05",
+        //   rcaArea: 27.89,
+        //   ccaArea: 5.3,
+        //   rcaProArea: 12.12,
+        //   ccaProArea: 0.8,
+        //   rcaResArea: 13.04,
+        //   ccaResArea: 4.32,
+        // },
+        // {
+        //   id: 4,
+        //   imageTgzName: "LC81180422017092LGN01",
+        //   collectTime: "2017-04-02",
+        //   rcaArea: 28.96,
+        //   ccaArea: 5.18,
+        //   rcaProArea: 11.74,
+        //   ccaProArea: 1.2,
+        //   rcaResArea: 14.42,
+        //   ccaResArea: 3.72,
+        // },
+        // {
+        //   id: 5,
+        //   imageTgzName: "LC81190412017355LGN00",
+        //   collectTime: "2017-12-21",
+        //   rcaArea: 17.61,
+        //   ccaArea: 3.38,
+        //   rcaProArea: 6.55,
+        //   ccaProArea: 1.02,
+        //   rcaResArea: 8.92,
+        //   ccaResArea: 2.09,
+        // },
       ],
     };
   },
   methods: {
+    async getAllImages() {
+      let res = await imageAllImages();
+      if (res.code === 200) {
+        let imageData = res.data;
+        imageData.sort(
+          (item, item2) =>
+            (item2.rcaProArea + item2.ccaProArea) /
+              (item2.rcaArea + item2.ccaArea) -
+            (item.rcaProArea + item.ccaProArea) / (item.rcaArea + item.ccaArea)
+        );
+        for (let i = 0; i < 5; i++) {
+          this.value[i] = { ...imageData[i] };
+          this.value[i].id = i;
+        }
+        this.value.sort((item, item2) =>
+          item.collectTime > item2.collectTime ? 1 : -1
+        );
+        // console.log(this.value);
+
+        imageData.sort(
+          (item, item2) =>
+            (item2.rcaResArea + item2.ccaResArea) /
+              (item2.rcaArea + item2.ccaArea) -
+            (item.rcaResArea + item.ccaResArea) / (item.rcaArea + item.ccaArea)
+        );
+        for (let i = 0; i < 5; i++) {
+          this.value2[i] = { ...imageData[i] };
+          this.value2[i].id = i;
+        }
+        this.value2.sort((item, item2) =>
+          item.collectTime > item2.collectTime ? 1 : -1
+        );
+        // console.log(this.value2);
+        this.echarts();
+      } else {
+        this.$message.error({
+          duration: 2000,
+          message: res.msg,
+        });
+      }
+      // console.log(this.tableData);
+    },
     echarts() {
       //初始化chart
       this.chart = Echarts.init(this.$refs.chart);
@@ -274,10 +317,12 @@ export default {
       this.chart2.setOption(option2);
     },
   },
-
-  mounted() {
-    this.echarts();
+  created() {
+    this.getAllImages();
   },
+  // mounted() {
+  //   this.echarts();
+  // },
 };
 </script>
 
