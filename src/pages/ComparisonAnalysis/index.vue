@@ -566,6 +566,7 @@ export default {
             color: "rgb(97, 160, 168)",
           },
         ],
+        animation: false,
       };
       // 传入数据
       this.chart.setOption(option);
@@ -657,6 +658,7 @@ export default {
             data: this.tableData.map((v) => v.ccaCha),
           },
         ],
+        animation: false,
       };
       // 传入数据
       this.chart2.setOption(option2);
@@ -689,6 +691,13 @@ export default {
     },
     // 导出word
     exportWord() {
+      if (!this.text) {
+        this.$message.error({
+          duration: 2000,
+          message: "暂无分析报告",
+        });
+        return;
+      }
       //这里要引入处理图片的插件，下载docxtemplater后，引入的就在其中了
       var ImageModule = require("docxtemplater-image-module-free");
       var that = this;
@@ -751,8 +760,6 @@ export default {
       }
     },
   },
-
-  mounted() {},
   created() {
     this.getAllImages();
   },

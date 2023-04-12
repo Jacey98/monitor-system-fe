@@ -26,7 +26,10 @@ requests.interceptors.response.use((res) => {
   }
   return res.data
 }, (error) => {
-  alert("服务器响应数据失败");
+  this.$message.error({
+    duration: 2000,
+    message: "服务器响应数据失败",
+  });
   // return Promise.reject(new Error(error))
 })
 

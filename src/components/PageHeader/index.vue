@@ -65,7 +65,7 @@ export default {
         6: "LoginPage",
       };
       if (index == 5 && localStorage.getItem("authority") != 1) {
-        alert("没有权限！");
+        alert("无权限！");
         return;
       }
       this.$router.push({

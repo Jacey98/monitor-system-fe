@@ -175,31 +175,31 @@ export default {
   data: function () {
     return {
       tableData: [
-        {
-          imageTgzName: "LC81180422015023LGN00",
-          collectTime: "2015-01-23",
-          spatialResolution: 15,
-          processStatus: "已处理",
-          longitudeRange: "119.81°-119.96°E",
-          latitudeRange: "26.60°-26.70°N",
-          rangeArea: 165.67,
-          ndwiArea: 122.47,
-          proArea: 40,
-          resArea: 30,
-          aquArea: 10,
-          rcaArea: 20,
-          rcaCount: 100,
-          ccaArea: 20,
-          ccaCount: 100,
-          rcaProArea: 10,
-          rcaProCount: 50,
-          ccaProArea: 10,
-          ccaProCount: 50,
-          rcaResArea: 5,
-          rcaResCount: 25,
-          ccaResArea: 5,
-          ccaResCount: 25,
-        },
+        // {
+        //   imageTgzName: "LC81180422015023LGN00",
+        //   collectTime: "2015-01-23",
+        //   spatialResolution: 15,
+        //   processStatus: "已处理",
+        //   longitudeRange: "119.81°-119.96°E",
+        //   latitudeRange: "26.60°-26.70°N",
+        //   rangeArea: 165.67,
+        //   ndwiArea: 122.47,
+        //   proArea: 40,
+        //   resArea: 30,
+        //   aquArea: 10,
+        //   rcaArea: 20,
+        //   rcaCount: 100,
+        //   ccaArea: 20,
+        //   ccaCount: 100,
+        //   rcaProArea: 10,
+        //   rcaProCount: 50,
+        //   ccaProArea: 10,
+        //   ccaProCount: 50,
+        //   rcaResArea: 5,
+        //   rcaResCount: 25,
+        //   ccaResArea: 5,
+        //   ccaResCount: 25,
+        // },
       ],
       multipleSelection: [],
       search: "",
@@ -312,7 +312,10 @@ export default {
       ) {
         this.submit();
       } else {
-        alert("请完整填写数据！");
+        this.$message.error({
+          duration: 2000,
+          message: "请完整填写数据",
+        });
       }
     },
     formatDate(date) {
@@ -346,6 +349,7 @@ export default {
           duration: 2000,
           message: res.msg,
         });
+        this.getAllImages();
       } else {
         this.$message.error({
           duration: 2000,
@@ -365,7 +369,10 @@ export default {
     // 列表下载
     downloadExcel() {
       if (!this.multipleSelection.length) {
-        alert("请选择数据!");
+        this.$message.error({
+          duration: 2000,
+          message: "请选择数据",
+        });
         return;
       }
       this.excelData = this.multipleSelection; // multipleSelection是一个数组，存储表格中选择的行的数据。
