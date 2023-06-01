@@ -1,6 +1,6 @@
 <template>
   <div id="head">
-    <p id="left">近海养殖区智能监测系统</p>
+    <p id="left">近海养殖区监测系统</p>
     <ul id="middle">
       <li @click="changeActive(0, 0, $event)" :class="activeArr[0]">
         <a href="#">首页</a>
@@ -11,12 +11,13 @@
       <li @click="changeActive(0, 2, $event)" :class="activeArr[2]">
         <a href="#">影像管理</a>
       </li>
+      <li @click="changeActive(0, 4, $event)" :class="activeArr[4]">
+        <a href="#">监测分析</a>
+      </li>
       <li @click="changeActive(0, 3, $event)" :class="activeArr[3]">
         <a href="#">养殖预警</a>
       </li>
-      <li @click="changeActive(0, 4, $event)" :class="activeArr[4]">
-        <a href="#">对比分析</a>
-      </li>
+      
     </ul>
     <el-dropdown id="right" @command="handleCommand">
       <span class="el-dropdown-link"

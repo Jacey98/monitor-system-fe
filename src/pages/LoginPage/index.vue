@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <p id="system">近海养殖区智能监测系统</p>
+    <p id="system">近海养殖区监测系统</p>
     <el-form
       id="form"
       ref="user"

@@ -8,12 +8,13 @@
       <span @click="subActive(2, $event)" class="pic"
         ><i class="el-icon-s-tools"></i><span>影 像 管 理</span></span
       >
+      <span @click="subActive(4, $event)" class="pic"
+        ><i class="el-icon-s-marketing"></i><span>监 测 分 析</span></span
+      >
       <span @click="subActive(3, $event)" class="pic"
         ><i class="el-icon-s-opportunity"></i><span>养 殖 预 警</span></span
       >
-      <span @click="subActive(4, $event)" class="pic"
-        ><i class="el-icon-s-marketing"></i><span>对 比 分 析</span></span
-      >
+      
     </div>
   </div>
 </template>
